@@ -1,2 +1,31 @@
-<h1>{{title}}</h1>
-<p>{{text}}</p>
+{% extends 'base.html' %}
+
+{% block title %}
+Головна
+{% endblock %}
+
+{% block content %}
+
+<h1>{{ title }}</h1>
+<p>{{ message }}</p>
+
+<div class="statistics">
+
+    <div class="stat-card">
+        <h3>2</h3>
+        <p>Клієнтів</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>2</h3>
+        <p>Замовлень</p>
+    </div>
+
+    <div class="stat-card">
+        <h3>4</h3>
+        <p>Послуг</p>
+    </div>
+
+</div>
+
+{% endblock %}

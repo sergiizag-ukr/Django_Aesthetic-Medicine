@@ -1,3 +1,28 @@
-<h1>Clients</h1>
+{% extends 'base.html' %}
 
-<p>{{ clients }}</p>
+{% block title %}
+Клієнти
+{% endblock %}
+
+{% block content %}
+
+<h1>Наші клієнти</h1>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Ім'я</th>
+        <th>Телефон</th>
+    </tr>
+
+    {% for client in clients %}
+    <tr>
+        <td>{{ client.id }}</td>
+        <td>{{ client.name }}</td>
+        <td>{{ client.phone }}</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}

@@ -111,19 +111,30 @@ def orders(request):
         }
     )
 
-
-def client_orders(request, client_id):
-
-    filtered_orders = [
-        order for order in ORDERS
-        if order["client_id"] == client_id
-    ]
-
+def inventory(request):
     return render(
         request,
-        "client_orders.html",
+        "inventory.html",
         {
-            "orders": filtered_orders,
-            "client_id": client_id,
+            "inventory": [
+                {
+                    "id": 1,
+                    "name": "Botox",
+                    "quantity": 15,
+                    "price": 5000,
+                },
+                {
+                    "id": 2,
+                    "name": "Lip Filler",
+                    "quantity": 4,
+                    "price": 7000,
+                },
+                {
+                    "id": 3,
+                    "name": "Chemical Peel",
+                    "quantity": 8,
+                    "price": 2500,
+                }
+            ]
         }
     )

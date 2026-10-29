@@ -1,31 +1,20 @@
 from django.shortcuts import render
-
-ORDERS = [
-    {
-        "id": 1,
-        "client_id": 1,
-        "service": "Botox",
-        "status": "Completed",
-        "price": 5000,
-    },
-    {
-        "id": 2,
-        "client_id": 2,
-        "service": "Laser Hair Removal",
-        "status": "In Progress",
-        "price": 3500,
-    },
-]
+from .models import Client, Service, Order, Inventory
 
 # Create your views here.
 def home(request):
+    context = {
+        "title": "Beauty Clinic",
+        "message": "Вітаємо в системі управління Beauty Clinic",
+        "total_clients": Client.objects.count(),
+        "total_orders": Order.objects.count(),
+        "total_services": Service.objects.count(),
+    }
+
     return render(
         request,
         "home.html",
-        {
-            "title": "Beauty Clinic",
-            "message": "Вітаємо в системі управління Beauty Clinic",
-        }
+        context
     )
 
 def about(request):
@@ -42,18 +31,7 @@ def clients(request):
         request,
         "clients.html",
         {
-            "clients": [
-                {
-                    "id": 1,
-                    "name": "Anna",
-                    "phone": "+380965802384"
-                },
-                {
-                    "id": 2,
-                    "name": "Olena",
-                    "phone": "+380965912554"
-                }
-            ]
+            "clients": Client.objects.all(),
         }
     )
 
@@ -62,28 +40,7 @@ def services(request):
         request,
         "services.html",
         {
-            "services": [
-                {
-                    "id": 1,
-                    "name": "Botox",
-                    "price": 5000,
-                },
-                {
-                    "id": 2,
-                    "name": "Laser Hair Removal",
-                    "price": 3500,
-                },
-                {
-                    "id": 3,
-                    "name": "Lip Filler",
-                    "price": 7000,
-                },
-                {
-                    "id": 4,
-                    "name": "Chemical Peel",
-                    "price": 2500,
-                },
-            ]
+            "services": Service.objects.all(),
         }
     )
 
@@ -92,22 +49,7 @@ def orders(request):
         request,
         "orders.html",
         {
-            "orders": [
-                {
-                    "id": 1,
-                    "client_id": 1,
-                    "service": "Botox",
-                    "status": "Completed",
-                    "price": 5000,
-                },
-                {
-                    "id": 2,
-                    "client_id": 2,
-                    "service": "Laser Hair Removal",
-                    "status": "In Progress",
-                    "price": 3500,
-                },
-            ]
+            "orders": Order.objects.all(),
         }
     )
 
@@ -116,25 +58,6 @@ def inventory(request):
         request,
         "inventory.html",
         {
-            "inventory": [
-                {
-                    "id": 1,
-                    "name": "Botox",
-                    "quantity": 15,
-                    "price": 5000,
-                },
-                {
-                    "id": 2,
-                    "name": "Lip Filler",
-                    "quantity": 4,
-                    "price": 7000,
-                },
-                {
-                    "id": 3,
-                    "name": "Chemical Peel",
-                    "quantity": 8,
-                    "price": 2500,
-                }
-            ]
+            "inventory": Inventory.objects.all()
         }
     )

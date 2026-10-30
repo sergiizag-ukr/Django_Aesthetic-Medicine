@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Замовлення
+{% endblock %}
+
+{% block content %}
+
+<h1>Замовлення</h1>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Ім'я</th>
+        <th>Прізвище</th>
+        <th>Послуга</th>
+        <th>Статус</th>
+        <th>Ціна</th>
+        <th>Дія</th>
+    </tr>
+
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.client.first_name }}</td>
+        <td>{{ order.client.last_name }}</td>
+        <td>{{ order.service }}</td>
+        <td>{{ order.status }}</td>
+        <td>{{ order.price }} ₴</td>
+        <td>
+            <a href="/orders/{{ order.id }}/">
+                Деталі
+            </a>
+        </td>       
+    </tr>
+    {% endfor %}
+
+</table>
+
+{% endblock %}

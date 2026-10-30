@@ -61,3 +61,28 @@ def inventory(request):
             "inventory": Inventory.objects.all()
         }
     )
+
+def client_detail(request, client_id):
+    client = Client.objects.get(id=client_id)
+
+    orders = Order.objects.filter(client=client)
+
+    return render(
+        request,
+        "client_detail.html",
+        {
+            "client": client,
+            "orders": orders,
+        }
+    )
+
+def order_detail(request, order_id):
+    order = Order.objects.get(id=order_id)
+
+    return render(
+        request,
+        "order_detail.html",
+        {
+            "order": order,
+        }
+    )

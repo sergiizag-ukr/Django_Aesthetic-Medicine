@@ -12,14 +12,22 @@
     <tr>
         <th>ID</th>
         <th>Ім'я</th>
+        <th>Прізвище</th>
         <th>Телефон</th>
+        <th>Дія</th>
     </tr>
 
     {% for client in clients %}
     <tr>
         <td>{{ client.id }}</td>
-        <td>{{ client.name }}</td>
+        <td>{{ client.first_name }}</td>
+        <td>{{ client.last_name }}</td>
         <td>{{ client.phone }}</td>
+        <td>
+            <a href="/clients/{{ client.id }}/">
+                Профіль
+            </a>
+        </td>
     </tr>
     {% endfor %}
 

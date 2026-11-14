@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404
 from .models import (
     Client,
     Service,
@@ -69,7 +70,7 @@ def inventory(request):
     )
 
 def client_detail(request, client_id):
-    client = Client.objects.get(id=client_id)
+    client = get_object_or_404(Client, id=client_id)
 
     orders = Order.objects.filter(client=client)
 
@@ -170,5 +171,78 @@ def add_order(request):
         {
             "clients": Client.objects.all(),
             "services": Service.objects.all(),
+        }
+    )
+
+def edit_client(request, client_id):
+
+    client = Client.objects.get(id=client_id)
+
+    if request.method == "POST":
+
+        phone = request.POST["phone"]
+        email = request.POST["email"]
+
+        if Client.objects.exclude(id=client.id).filter(
+            phone=phone
+        ).exists():
+
+            return render(
+                request,
+                "edit_client.html",
+                {
+                    "client": client,
+                    "error": f"Клієнт з телефоном {phone} вже існує"
+                }
+            )
+
+        if Client.objects.exclude(id=client.id).filter(
+            email=email
+        ).exists():
+
+            return render(
+                request,
+                "edit_client.html",
+                {
+                    "client": client,
+                    "error": f"Клієнт з email {email} вже існує"
+                }
+            )
+
+        client.first_name = request.POST["first_name"]
+        client.last_name = request.POST["last_name"]
+        client.phone = phone
+        client.email = email
+        client.date_of_birth = request.POST.get("date_of_birth")
+        client.skin_type = request.POST.get("skin_type")
+
+        client.save()
+
+        return redirect(
+            "client_detail",
+            client_id=client.id
+        )
+
+    return render(
+        request,
+        "edit_client.html",
+        {
+            "client": client
+        }
+    )
+
+def delete_client(request, client_id):
+
+    client = Client.objects.get(id=client_id)
+
+    if request.method == "POST":
+        client.delete()
+        return redirect("clients")
+
+    return render(
+        request,
+        "delete_client.html",
+        {
+            "client": client
         }
     )

@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Редагування клієнта
+{% endblock %}
+
+{% block content %}
+
+<h1>Редагування клієнта</h1>
+
+{% if error %}
+<p style="color:red;">
+    {{ error }}
+</p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <p>
+        Ім'я *
+        <br>
+        <input
+            type="text"
+            name="first_name"
+            value="{{ client.first_name }}"
+            required
+        >
+    </p>
+
+    <p>
+        Прізвище *
+        <br>
+        <input
+            type="text"
+            name="last_name"
+            value="{{ client.last_name }}"
+            required
+        >
+    </p>
+
+    <p>
+        Телефон *
+        <br>
+        <input
+            type="text"
+            name="phone"
+            value="{{ client.phone }}"
+            required
+        >
+    </p>
+
+    <p>
+        Email *
+        <br>
+        <input
+            type="email"
+            name="email"
+            value="{{ client.email }}"
+            required
+        >
+    </p>
+
+    <p>
+        Дата народження
+        <br>
+        <input
+            type="date"
+            name="date_of_birth"
+            value="{{ client.date_of_birth|date:'Y-m-d' }}"
+        >
+    </p>
+
+    <p>
+        Тип шкіри
+        <br>
+        <select name="skin_type">
+            <option value="">---------</option>
+
+            <option value="oily"
+                {% if client.skin_type == "oily" %}selected{% endif %}>
+                Жирна
+            </option>
+
+            <option value="dry"
+                {% if client.skin_type == "dry" %}selected{% endif %}>
+                Суха
+            </option>
+
+            <option value="combination"
+                {% if client.skin_type == "combination" %}selected{% endif %}>
+                Комбінована
+            </option>
+
+            <option value="sensitive"
+                {% if client.skin_type == "sensitive" %}selected{% endif %}>
+                Чутлива
+            </option>
+
+        </select>
+    </p>
+
+    <button type="submit">
+        Зберегти зміни
+    </button>
+
+</form>
+
+{% endblock %}

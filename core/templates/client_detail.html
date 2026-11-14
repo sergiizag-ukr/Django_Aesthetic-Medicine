@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Профіль клієнта
+{% endblock %}
+
+{% block content %}
+
+<h1>{{ client.first_name }} {{ client.last_name }}</h1>
+
+<table>
+    <tr>
+        <th>Телефон</th>
+        <td>{{ client.phone }}</td>
+    </tr>
+
+    <tr>
+        <th>Email</th>
+        <td>{{ client.email }}</td>
+    </tr>
+</table>
+
+<br>
+
+<a href="/admin/core/client/{{ client.id }}/change/"
+   class="btn">
+    Редагувати
+</a>
+
+<a href="/admin/core/client/{{ client.id }}/delete/"
+   class="btn">
+    Видалити
+</a>
+
+<h2>Замовлення клієнта</h2>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Послуга</th>
+        <th>Статус</th>
+        <th>Ціна</th>
+    </tr>
+
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.service.name }}</td>
+        <td>{{ order.status }}</td>
+        <td>{{ order.price }} ₴</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

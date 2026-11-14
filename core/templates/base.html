@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    {% load static %}
+
+    <title>{% block title %}Beauty Clinic{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+
+        <div class="logo-section">
+            <img src="{% static 'img/logo.png' %}"
+                 alt="Beauty Clinic Logo"
+                 class="logo">
+
+            <div>
+                <h1>✨ Beauty Clinic & Aesthetic Medicine</h1>
+                <p>Краса, здоров'я та впевненість у собі</p>
+            </div>
+        </div>
+
+        <nav>
+            <a href="{% url 'home' %}">🏠 Головна</a>
+            <a href="{% url 'clients' %}">👥 Клієнти</a>
+            <a href="{% url 'orders' %}">📋 Замовлення</a>
+            <a href="{% url 'services' %}">💎 Послуги</a>
+            <a href="{% url 'inventory' %}">📦 Інвентар</a>
+            <a href="{% url 'about' %}">ℹ️ Про проект</a>
+        </nav>
+
+    </div>
+</header>
+
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer>
+    <p>© 2026 Beauty Clinic Management System</p>
+</footer>
+
+</body>
+</html>

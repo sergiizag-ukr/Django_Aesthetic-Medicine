@@ -18,6 +18,36 @@
         <th>Email</th>
         <td>{{ client.email }}</td>
     </tr>
+
+    <tr>
+        <th>Дата народження</th>
+        <td>{{ client.date_of_birth }}</td>
+    </tr>
+
+    <tr>
+        <th>Тип шкіри</th>
+        <td>{{ client.get_skin_type_display }}</td>
+    </tr>
+
+    {% if profile %}
+
+    <tr>
+        <th>Алергії</th>
+        <td>{{ profile.allergies }}</td>
+    </tr>
+
+    <tr>
+        <th>Попередні процедури</th>
+        <td>{{ profile.previous_treatments }}</td>
+    </tr>
+
+    <tr>
+        <th>Улюблені процедури</th>
+        <td>{{ profile.preferred_procedures }}</td>
+    </tr>
+
+    {% endif %}
+
 </table>
 
 <br>
@@ -50,6 +80,7 @@
         <td>{{ order.price }} ₴</td>
     </tr>
     {% endfor %}
+
 </table>
 
 {% endblock %}

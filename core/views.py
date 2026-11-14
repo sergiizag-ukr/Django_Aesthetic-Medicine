@@ -1,5 +1,11 @@
 from django.shortcuts import render, redirect
-from .models import Client, Service, Order, Inventory
+from .models import (
+    Client,
+    Service,
+    Order,
+    Inventory,
+    PatientProfile,
+)
 
 # Create your views here.
 def home(request):
@@ -67,12 +73,17 @@ def client_detail(request, client_id):
 
     orders = Order.objects.filter(client=client)
 
+    profile = PatientProfile.objects.filter(
+        client=client
+    ).first()
+
     return render(
         request,
         "client_detail.html",
         {
             "client": client,
             "orders": orders,
+            "profile": profile,
         }
     )
 
@@ -96,8 +107,10 @@ def add_client(request):
         phone = request.POST["phone"]
         email = request.POST["email"]
 
-        if Client.objects.filter(phone=phone).exists():
+        date_of_birth = request.POST.get("date_of_birth")
+        skin_type = request.POST.get("skin_type")
 
+        if Client.objects.filter(phone=phone).exists():
             return render(
                 request,
                 "add_client.html",
@@ -107,7 +120,6 @@ def add_client(request):
             )
 
         if Client.objects.filter(email=email).exists():
-
             return render(
                 request,
                 "add_client.html",
@@ -121,6 +133,8 @@ def add_client(request):
             last_name=last_name,
             phone=phone,
             email=email,
+            date_of_birth=date_of_birth,
+            skin_type=skin_type,
         )
 
         return redirect("clients")

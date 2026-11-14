@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Додати клієнта
+{% endblock %}
+
+{% block content %}
+
+<h1>Додати клієнта</h1>
+
+{% if error %}
+<p style="color:red;">
+    {{ error }}
+</p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <p>
+        Ім'я *
+        <br>
+        <input type="text" name="first_name" required>
+    </p>
+
+    <p>
+        Прізвище *
+        <br>
+        <input type="text" name="last_name" required>
+    </p>
+
+    <p>
+        Телефон *
+        <br>
+        <input type="text" name="phone" required>
+    </p>
+
+    <p>
+        Email *
+        <br>
+        <input type="email" name="email" required>
+    </p>
+
+    <p>
+        Дата народження
+        <br>
+        <input type="date" name="date_of_birth">
+    </p>
+
+    <p>
+        Тип шкіри
+        <br>
+        <select name="skin_type">
+            <option value="">---------</option>
+            <option value="oily">Жирна</option>
+            <option value="dry">Суха</option>
+            <option value="combination">Комбінована</option>
+            <option value="sensitive">Чутлива</option>
+        </select>
+    </p>
+
+    <button type="submit">
+        Зберегти
+    </button>
+
+</form>
+
+{% endblock %}

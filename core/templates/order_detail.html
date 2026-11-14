@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Деталі замовлення
+{% endblock %}
+
+{% block content %}
+
+<h1>Замовлення №{{ order.id }}</h1>
+
+<table>
+    <tr>
+        <th>Клієнт</th>
+        <td>
+            {{ order.client.first_name }}
+            {{ order.client.last_name }}
+        </td>
+    </tr>
+
+    <tr>
+        <th>Послуга</th>
+        <td>{{ order.service.name }}</td>
+    </tr>
+
+    <tr>
+        <th>Статус</th>
+        <td>{{ order.status }}</td>
+    </tr>
+
+    <tr>
+        <th>Ціна</th>
+        <td>{{ order.price }} ₴</td>
+    </tr>
+</table>
+
+{% endblock %}

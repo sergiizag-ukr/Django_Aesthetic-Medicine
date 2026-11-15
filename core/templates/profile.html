@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Профіль користувача
+{% endblock %}
+
+{% block content %}
+
+<h1>Профіль користувача</h1>
+
+<table>
+    <tr>
+        <th>Логін</th>
+        <td>{{ user.username }}</td>
+    </tr>
+
+    <tr>
+        <th>Email</th>
+        <td>{{ user.email }}</td>
+    </tr>
+
+    <tr>
+        <th>Дата реєстрації</th>
+        <td>{{ user.date_joined }}</td>
+    </tr>
+</table>
+
+{% endblock %}

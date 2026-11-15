@@ -1,5 +1,12 @@
-from django.shortcuts import render, redirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import (
+    render,
+    redirect,
+    get_object_or_404,
+)
+
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+
 from .models import (
     Client,
     Service,
@@ -8,7 +15,7 @@ from .models import (
     PatientProfile,
 )
 
-# Create your views here.
+
 def home(request):
     context = {
         "title": "Beauty Clinic",
@@ -24,14 +31,17 @@ def home(request):
         context
     )
 
+
 def about(request):
-    return render(request,
-                "about.html",
-                {
-                    "title": "Aesthetic Medicine",
-                    "text": "Beauty Clinic Management System - це навчальний Django-проект для управління клієнтами, косметологічними послугами та замовленнями в клініці естетичної медицини",
-                }
-            )
+    return render(
+        request,
+        "about.html",
+        {
+            "title": "Aesthetic Medicine",
+            "text": "Beauty Clinic Management System - це навчальний Django-проект для управління клієнтами, косметологічними послугами та замовленнями в клініці естетичної медицини",
+        }
+    )
+
 
 def clients(request):
     return render(
@@ -42,6 +52,7 @@ def clients(request):
         }
     )
 
+
 def services(request):
     return render(
         request,
@@ -50,6 +61,7 @@ def services(request):
             "services": Service.objects.all(),
         }
     )
+
 
 def orders(request):
     return render(
@@ -60,6 +72,7 @@ def orders(request):
         }
     )
 
+
 def inventory(request):
     return render(
         request,
@@ -69,10 +82,16 @@ def inventory(request):
         }
     )
 
-def client_detail(request, client_id):
-    client = get_object_or_404(Client, id=client_id)
 
-    orders = Order.objects.filter(client=client)
+def client_detail(request, client_id):
+    client = get_object_or_404(
+        Client,
+        id=client_id
+    )
+
+    orders = Order.objects.filter(
+        client=client
+    )
 
     profile = PatientProfile.objects.filter(
         client=client
@@ -88,8 +107,12 @@ def client_detail(request, client_id):
         }
     )
 
+
 def order_detail(request, order_id):
-    order = Order.objects.get(id=order_id)
+    order = get_object_or_404(
+        Order,
+        id=order_id
+    )
 
     return render(
         request,
@@ -98,6 +121,7 @@ def order_detail(request, order_id):
             "order": order,
         }
     )
+
 
 def add_client(request):
 
@@ -108,10 +132,18 @@ def add_client(request):
         phone = request.POST["phone"]
         email = request.POST["email"]
 
-        date_of_birth = request.POST.get("date_of_birth")
-        skin_type = request.POST.get("skin_type")
+        date_of_birth = request.POST.get(
+            "date_of_birth"
+        )
 
-        if Client.objects.filter(phone=phone).exists():
+        skin_type = request.POST.get(
+            "skin_type"
+        )
+
+        if Client.objects.filter(
+            phone=phone
+        ).exists():
+
             return render(
                 request,
                 "add_client.html",
@@ -120,7 +152,10 @@ def add_client(request):
                 }
             )
 
-        if Client.objects.filter(email=email).exists():
+        if Client.objects.filter(
+            email=email
+        ).exists():
+
             return render(
                 request,
                 "add_client.html",
@@ -145,6 +180,7 @@ def add_client(request):
         "add_client.html"
     )
 
+
 def add_order(request):
 
     if request.method == "POST":
@@ -153,8 +189,13 @@ def add_order(request):
         service_id = request.POST["service"]
         status = request.POST["status"]
 
-        client = Client.objects.get(id=client_id)
-        service = Service.objects.get(id=service_id)
+        client = Client.objects.get(
+            id=client_id
+        )
+
+        service = Service.objects.get(
+            id=service_id
+        )
 
         Order.objects.create(
             client=client,
@@ -174,16 +215,22 @@ def add_order(request):
         }
     )
 
+
 def edit_client(request, client_id):
 
-    client = Client.objects.get(id=client_id)
+    client = get_object_or_404(
+        Client,
+        id=client_id
+    )
 
     if request.method == "POST":
 
         phone = request.POST["phone"]
         email = request.POST["email"]
 
-        if Client.objects.exclude(id=client.id).filter(
+        if Client.objects.exclude(
+            id=client.id
+        ).filter(
             phone=phone
         ).exists():
 
@@ -196,7 +243,9 @@ def edit_client(request, client_id):
                 }
             )
 
-        if Client.objects.exclude(id=client.id).filter(
+        if Client.objects.exclude(
+            id=client.id
+        ).filter(
             email=email
         ).exists():
 
@@ -213,8 +262,12 @@ def edit_client(request, client_id):
         client.last_name = request.POST["last_name"]
         client.phone = phone
         client.email = email
-        client.date_of_birth = request.POST.get("date_of_birth")
-        client.skin_type = request.POST.get("skin_type")
+        client.date_of_birth = request.POST.get(
+            "date_of_birth"
+        )
+        client.skin_type = request.POST.get(
+            "skin_type"
+        )
 
         client.save()
 
@@ -231,9 +284,13 @@ def edit_client(request, client_id):
         }
     )
 
+
 def delete_client(request, client_id):
 
-    client = Client.objects.get(id=client_id)
+    client = get_object_or_404(
+        Client,
+        id=client_id
+    )
 
     if request.method == "POST":
         client.delete()
@@ -244,5 +301,44 @@ def delete_client(request, client_id):
         "delete_client.html",
         {
             "client": client
+        }
+    )
+
+
+def register(request):
+
+    if request.method == "POST":
+
+        form = UserCreationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect("login")
+
+        print("=" * 50)
+        print(form.errors)
+        print("=" * 50)
+
+    else:
+
+        form = UserCreationForm()
+
+    return render(
+        request,
+        "registration/register.html",
+        {
+            "form": form
+        }
+    )
+
+
+@login_required
+def profile(request):
+
+    return render(
+        request,
+        "profile.html",
+        {
+            "user": request.user
         }
     )

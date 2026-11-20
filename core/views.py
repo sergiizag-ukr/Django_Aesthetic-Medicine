@@ -15,6 +15,10 @@ from .models import (
     PatientProfile,
 )
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .serializers import OrderSerializer
+
 
 def home(request):
     context = {
@@ -342,3 +346,32 @@ def profile(request):
             "user": request.user
         }
     )
+
+class OrderAPIView(APIView):
+
+    def get(self, request):
+        orders = Order.objects.all()
+        serializer = OrderSerializer(
+            orders,
+            many=True
+        )
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = OrderSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+        return Response(serializer.errors)
+
+
+class StatisticsAPIView(APIView):
+
+    def get(self, request):
+        return Response({
+            "clients": Client.objects.count(),
+            "services": Service.objects.count(),
+            "orders": Order.objects.count(),
+        })

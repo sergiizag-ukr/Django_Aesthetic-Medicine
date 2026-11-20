@@ -6,6 +6,7 @@ from django.shortcuts import (
 
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from rest_framework.decorators import action
 
 from .models import (
     Client,
@@ -17,7 +18,15 @@ from .models import (
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import OrderSerializer
+from rest_framework import viewsets
+
+from .serializers import (
+    ClientSerializer,
+    ServiceSerializer,
+    OrderSerializer,
+)
+
+
 
 
 def home(request):
@@ -375,3 +384,42 @@ class StatisticsAPIView(APIView):
             "services": Service.objects.count(),
             "orders": Order.objects.count(),
         })
+
+class ClientViewSet(viewsets.ModelViewSet):
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+
+
+class ServiceViewSet(viewsets.ModelViewSet):
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializer
+
+
+class OrderViewSet(viewsets.ModelViewSet):
+    serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        queryset = Order.objects.all()
+
+        status = self.request.query_params.get("status")
+
+        if status:
+            queryset = queryset.filter(
+                status=status
+            )
+
+        return queryset
+
+    @action(detail=True, methods=["post"])
+    def complete(self, request, pk=None):
+        order = self.get_object()
+
+        order.status = "completed"
+        order.save()
+
+        return Response({
+            "message": "Order completed"
+        })
+
+    def perform_create(self, serializer):
+        serializer.save(status="new")
